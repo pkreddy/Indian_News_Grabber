@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[62]:
+# In[1]:
 
 
 import requests
@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 import datetime
 
 
-# In[63]:
+# In[2]:
 
 
 url = "https://inshorts.com/sitemap-en.xml"
@@ -19,27 +19,27 @@ page = requests.get(url)
 tree = html.fromstring(page.content)
 
 
-# In[64]:
+# In[3]:
 
 
 count = len(tree.xpath("//url"))
 raw_urls = []
 
 
-# In[65]:
+# In[4]:
 
 
 str(tree.xpath("//url[2]/loc/text()")).replace("['","").replace("']","")
 
 
-# In[66]:
+# In[5]:
 
 
 for i in range(1,count+1):
     raw_urls.append(str(tree.xpath("//url["+str(i)+"]/loc/text()")).replace("['","").replace("']",""))
 
 
-# In[67]:
+# In[6]:
 
 
 k = []
@@ -51,63 +51,64 @@ for i in range(1,count+1):
     v.append(str(tree.xpath("//url["+str(i)+"]/loc/text()")).replace("['","").replace("']",""))
 
 
-# In[68]:
+# In[7]:
 
 
 dict_url = {k[i]:v[i] for i in range(count)}
 
 
-# In[69]:
+# In[8]:
 
 
 #dict_url_pandas = pd.DataFrame.from_dict(dict_url, orient='index')
 dict_url_pandas = pd.DataFrame(list(dict_url.items()), columns=['news_id','news_url'])
 
 
-# In[70]:
+# In[9]:
 
 
 dict_url_pandas.head()
 
 
-# In[71]:
+# In[10]:
 
 
 temp = pd.read_csv('inshorts_url.csv')
 news_url_set = set(temp['news_url'])
 
 
-# In[72]:
+# In[11]:
 
 
 temp.head()
 
 
-# In[73]:
+# In[12]:
 
 
 dict_url_pandas_set = set(dict_url_pandas['news_url'])
 
 
-# In[56]:
+# In[13]:
 
 
 pd.DataFrame(list((dict_url_pandas_set | news_url_set)), columns=['news_url']).to_csv('inshorts_url.csv', index=False)
 
 
-# In[57]:
+# In[14]:
 
 
-pd.DataFrame(list((dict_url_pandas_set - news_url_set)), columns=['news_url']).to_csv('inshorts_new_url.csv', index=False)
+if len(dict_url_pandas_set - news_url_set) > 0:
+    pd.DataFrame(list((dict_url_pandas_set - news_url_set)), columns=['news_url']).to_csv('inshorts_new_url.csv', index=False)
 
 
-# In[60]:
+# In[15]:
 
 
 temp.news_url[2001]
 
 
-# In[61]:
+# In[16]:
 
 
 temp = pd.read_csv('inshorts_url.csv')
