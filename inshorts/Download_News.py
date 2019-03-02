@@ -55,17 +55,20 @@ def get_news(news_url, proxy):
     return news
 
 
-# temp = pd.read_csv('inshorts_new_url.csv')
-# temp.head()
+# In[ ]:
+
+
+#temp.head()
+
 
 # temp.news_url.iloc[2]
 
-# In[7]:
+# In[ ]:
 
 
 def collect_news():
+    myfile = "F:\GitHub\Indian_News_Grabber\inshorts\inshorts_new_url.csv"
     if os.path.isfile(myfile):
-        myfile = "F:\GitHub\Indian_News_Grabber\inshorts\inshorts_new_url.csv"
         l = []
         proxy = {
             "http":"http://45.64.11.1:8080",
@@ -84,10 +87,11 @@ def collect_news():
             "http":"http://103.209.64.19:6666",
             "http":"http://103.14.235.26:8080",
         }
+        temp = pd.read_csv('inshorts_new_url.csv')
         for i in range(len(temp)):
             l.append(get_news(temp.news_url.iloc[i],proxy))
         news_total = pd.DataFrame.from_records(l, columns=['url','headline','body','author','time','date','source'])
-        news_total.to_csv('news_inshorts.csv', index = False, mode = a)
+        news_total.to_csv('news_inshorts.csv', index = False, mode = 'a')
         news_total = pd.read_csv('news_inshorts.csv')
         #news_total = news_total.drop(news_total.columns[[0]], axis=1)
         if os.path.isfile(myfile):
@@ -98,4 +102,10 @@ def collect_news():
 
 
 collect_news()
+
+
+# In[ ]:
+
+
+
 
