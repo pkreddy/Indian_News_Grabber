@@ -134,6 +134,6 @@ temp.news_url[2001]
 
 
 temp = pd.read_csv('inshorts_url.csv')
-temp.size
+print(temp.size)
 
 
